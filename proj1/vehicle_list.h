@@ -5,13 +5,14 @@
 #include <fstream>
 using namespace std;
 
-
+//TODO not ready for secondary list
 //Second Node for vehicle features
+/*
 struct FeatureNode
 {
     char * feature;
     FeatureNode * next;
-};
+};*/
 
 //A vehicle is made up of 10 different features, 9 char *'s and a node that 
 //will be used to create a LLL of features that will also be char *'s
@@ -26,7 +27,8 @@ struct Vehicle
     char * vehicleType;
     char * engine;
     char * numPeople;
-    FeatureNode * featureHead;
+    //TODO not ready for secondary list
+    //FeatureNode * featureHead;
 };
 
 //Node used for building a LLL of vehicles. Has data for a vehicle as well as

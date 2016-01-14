@@ -10,7 +10,9 @@ int main()
 {
     //Welcome screen for the user, displayed upon the programing opening
     cout << "Welcome...." << endl; //TODO
-
+    
+    Vehicle_List myList;
+    myList.displayList();
     //Prompt user for desired features / Store desired featers TODO
 
     //Prompt user for unwanted features / Store unwanted features TODO
