@@ -5,25 +5,28 @@
 #include <fstream>
 using namespace std;
 
-//individual feature
-struct Feature
+
+//Second Node for vehicle features
+struct FeatureNode
 {
-    char * featureName;
+    char * feature;
+    FeatureNode * next;
 };
 
-//A vehicle is made up of 10 different features
+//A vehicle is made up of 10 different features, 9 char *'s and a node that 
+//will be used to create a LLL of features that will also be char *'s
 struct Vehicle
 {
-    Feature manufacturer;
-    Feature model;
-    Feature year;
-    Feature price;
-    Feature fuelType;
-    Feature fuelEff;
-    Feature vehicleType;
-    Feature engine;
-    Feature numPeople;
-    Feature features; //TODO possibly a second LLL for features
+    char * manufacturer;
+    char * model;
+    char * year;
+    char * price;
+    char * fuelType;
+    char * fuelEff;
+    char * vehicleType;
+    char * engine;
+    char * numPeople;
+    FeatureNode * featureHead;
 };
 
 //Node used for building a LLL of vehicles. Has data for a vehicle as well as
@@ -48,8 +51,13 @@ public:
     //Assign points for unwanted features TODO
     //Sort by wishlist TODO
     //Display specific make or model TODO
+    //TODO For testing purposes, display entire list
+    bool displayList();
 private:
     //private data members
     Node * head;
-    
+    Node * tail;
+    //Function used to build the list. Reads in data from an external data file
+    //parses the information, and then builds a LLL
+    bool buildList();   
 };
