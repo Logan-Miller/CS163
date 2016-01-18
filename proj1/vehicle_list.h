@@ -59,7 +59,9 @@ private:
     //private data members
     Node * head;
     Node * tail;
-    //Function used to build the list. Reads in data from an external data file
-    //parses the information, and then builds a LLL
-    bool buildList();   
+    //Reads in data from an external data file parses the information, creates
+    //a node from the data, passes node to build list
+    bool fileRead();
+    //Recieves a node, appends the node to a list
+    bool buildList(Node * &temp);
 };
