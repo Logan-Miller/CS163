@@ -1,2 +1,2 @@
-Volkswagon:Passat:2001:6600:Gas:20mpg:Stationwagon:V6:5|air bags,heating
-Honda:Civic:2001:5000:Gas:30mpg:Sedan:V6:5|air conditioning
+Volkswagon:Passat:2001:6600:Gas:20mpg:Stationwagon:V6:5|air bags,heating,wash|
+Honda:Civic:2001:5000:Gas:30mpg:Sedan:V6:5|air conditioning|

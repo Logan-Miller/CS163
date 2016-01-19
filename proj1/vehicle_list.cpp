@@ -50,7 +50,7 @@ bool Vehicle_List::fileRead()
             temp->vehicle.numPeople = new char [50];
             
             temp->vehicle.featureHead = NULL;
-            
+            temp->vehicle.featureTail = NULL;
             temp->next = NULL;
 
             char * tempArr = new char[100];
@@ -103,7 +103,6 @@ bool Vehicle_List::buildList(Node * &temp)
 }
 
 //Function to parse data read in from text file after a '|'
-//
 bool Vehicle_List::buildNestedList(Node * &temp, char * &tempArr)
 {
     int arrLen = 0;
@@ -112,20 +111,79 @@ bool Vehicle_List::buildNestedList(Node * &temp, char * &tempArr)
     int index = 0;
     int fStart = 0;
     int fEnd = 0;
-    int subSize = 0;
-//TODO Working on parsing the substring 
+    int count = 0;
+
     while(index < arrLen)
     {
-        ++index;
-        if(index == ',')
+        if(tempArr[index] == ',')
         {
+            count += 1;
             fEnd = index - 1;
-            subSize = arrLen - fEnd;
+            
+            FeatureNode * tempFeat = new FeatureNode;
+            tempFeat->feature = new char[100];
+            tempFeat->next = NULL;
+            
+            strncpy(tempFeat->feature, tempArr + fStart, fEnd-fStart+1);
+            fStart = index + 1;
+         
+            nestedList(temp, tempFeat);
         }
+
+        if(tempArr[index] == '|')
+        {          
+            fEnd = index - 1;
+            
+            FeatureNode * tempFeat = new FeatureNode;
+            tempFeat->feature = new char[100];
+            tempFeat->next = NULL;
+            
+            strncpy(tempFeat->feature, tempArr + fStart, fEnd-fStart+1);
+            fStart = index + 1;
+         
+            nestedList(temp, tempFeat);
+        }
+    
+        ++index;
     }
-  
+    
+   /* if(count == 0)
+    {
+        FeatureNode * tempFeat = new FeatureNode;
+        tempFeat->feature = new char[100];
+        tempFeat->next = NULL;
+        strcpy(tempFeat->feature,tempArr);
+        nestedList(temp, tempFeat);
+    }*/
+
     return true;
 }
+
+bool Vehicle_List::nestedList(Node * &temp, FeatureNode * &tempFeat)
+{
+    if(!temp->vehicle.featureHead)
+    {
+        temp->vehicle.featureHead = tempFeat;
+        temp->vehicle.featureHead->next = NULL;
+        temp->vehicle.featureTail = temp->vehicle.featureHead;
+    }
+
+    /*FeatureNode * currentFeat = temp->vehicle.featureHead;
+    
+    while(currentFeat->next)
+    {
+        currentFeat = currentFeat->next;
+    }
+
+    currentFeat->next = tempFeat;
+    currentFeat->next = NULL;*/
+
+    temp->vehicle.featureTail->next = tempFeat;
+    temp->vehicle.featureTail = temp->vehicle.featureTail->next;
+    temp->vehicle.featureTail->next = NULL;
+    return true;
+}
+
 
 //Sort and display by manufacturer TODO
 //assign points for wanted features TODO
@@ -143,6 +201,8 @@ bool Vehicle_List::displayList()
         Node * current = head;
         while(current)
         {
+            FeatureNode * currentFeat = current->vehicle.featureHead;
+
             cout << current->vehicle.manufacturer << endl;
             cout << current->vehicle.model << endl;
             cout << current->vehicle.year << endl;
@@ -151,6 +211,17 @@ bool Vehicle_List::displayList()
             cout << current->vehicle.fuelEff << endl;
             cout << current->vehicle.vehicleType << endl;
             cout << current->vehicle.engine << endl;
+            cout << "*********" << endl;
+            cout << "Available Features :";
+            while(currentFeat)
+            {
+                cout << currentFeat->feature << " ";
+                currentFeat = currentFeat->next;
+            }
+            
+            cout << endl << "********" << endl;
+            cout << endl << endl;
+            
             current = current->next;
         }
         return true;

@@ -28,6 +28,7 @@ struct Vehicle
     char * numPeople;
     
     FeatureNode * featureHead;
+    FeatureNode * featureTail;
 };
 
 //Node used for building a LLL of vehicles. Has data for a vehicle as well as
@@ -65,4 +66,5 @@ private:
     //Recieves a node, appends the node to a list
     bool buildList(Node * &temp);
     bool buildNestedList(Node * &temp, char * &tempArr);
+    bool nestedList(Node * &temp, FeatureNode * &tempFeat);
 };
