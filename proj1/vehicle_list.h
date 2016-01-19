@@ -5,14 +5,13 @@
 #include <fstream>
 using namespace std;
 
-//TODO not ready for secondary list
 //Second Node for vehicle features
-/*
+
 struct FeatureNode
 {
     char * feature;
     FeatureNode * next;
-};*/
+};
 
 //A vehicle is made up of 10 different features, 9 char *'s and a node that 
 //will be used to create a LLL of features that will also be char *'s
@@ -27,8 +26,8 @@ struct Vehicle
     char * vehicleType;
     char * engine;
     char * numPeople;
-    //TODO not ready for secondary list
-    //FeatureNode * featureHead;
+    
+    FeatureNode * featureHead;
 };
 
 //Node used for building a LLL of vehicles. Has data for a vehicle as well as
@@ -53,6 +52,7 @@ public:
     //Assign points for unwanted features TODO
     //Sort by wishlist TODO
     //Display specific make or model TODO
+    
     //TODO For testing purposes, display entire list
     bool displayList();
 private:
@@ -64,4 +64,5 @@ private:
     bool fileRead();
     //Recieves a node, appends the node to a list
     bool buildList(Node * &temp);
+    bool buildNestedList(Node * &temp, char * &tempArr);
 };

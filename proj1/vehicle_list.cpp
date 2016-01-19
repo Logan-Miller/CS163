@@ -19,8 +19,8 @@ Vehicle_List::~Vehicle_List()
 bool Vehicle_List::fileRead()
 {
     //Temp arrays used for reading in strings from a text file
-    char tempMan[50];
-    char tempMod[50];
+    //char tempMan[50];
+    /*char tempMod[50];
     char tempYer[50];
     char tempPrc[50];
     char tempFtp[50];
@@ -28,7 +28,7 @@ bool Vehicle_List::fileRead()
     char tempVtp[50];
     char tempEng[50];
     char tempNum[50];
-    
+    */
     ifstream file_in;
     file_in.open("vehicles.txt");
     if(file_in)
@@ -36,10 +36,8 @@ bool Vehicle_List::fileRead()
         //TODO Parse the last line of the text file within the '[ ]', the data
         //inside these brackets on each line of the text file will be its own
         //LLL
-        int count = 0;
         while(!file_in.eof())
         {
-        count += 1;
             Node * temp = new Node;
             temp->vehicle.manufacturer = new char [50];
             temp->vehicle.model = new char [50];
@@ -50,32 +48,38 @@ bool Vehicle_List::fileRead()
             temp->vehicle.vehicleType = new char [50];
             temp->vehicle.engine = new char [50];
             temp->vehicle.numPeople = new char [50];
+            
+            temp->vehicle.featureHead = NULL;
+            
             temp->next = NULL;
 
-            file_in.getline(tempMan,50,':');
-            strcpy(temp->vehicle.manufacturer, tempMan);
-            file_in.getline(tempMod,50,':');
-            strcpy(temp->vehicle.model, tempMod);
-            file_in.getline(tempYer,50,':');
-            strcpy(temp->vehicle.year, tempYer);
-            file_in.getline(tempPrc,50,':');
-            strcpy(temp->vehicle.price, tempPrc);
-            file_in.getline(tempFtp,50,':');
-            strcpy(temp->vehicle.fuelType, tempFtp);
-            file_in.getline(tempFef,50,':');
-            strcpy(temp->vehicle.fuelEff, tempFef);
-            file_in.getline(tempVtp,50,':');
-            strcpy(temp->vehicle.vehicleType, tempVtp);
-            file_in.getline(tempEng,50,':');
-            strcpy(temp->vehicle.engine, tempEng);
-            file_in.getline(tempEng,50,'\n');
-            strcpy(temp->vehicle.numPeople, tempNum);
-            
+            char * tempArr = new char[100];
+
+            file_in.getline(temp->vehicle.manufacturer,50,':');
+            //strcpy(temp->vehicle.manufacturer, tempMan);
+            file_in.getline(temp->vehicle.model,50,':');
+            //strcpy(temp->vehicle.model, tempMod);
+            file_in.getline(temp->vehicle.year,50,':');
+            //strcpy(temp->vehicle.year, tempYer);
+            file_in.getline(temp->vehicle.price,50,':');
+            //strcpy(temp->vehicle.price, tempPrc);
+            file_in.getline(temp->vehicle.fuelType,50,':');
+            //strcpy(temp->vehicle.fuelType, tempFtp);
+            file_in.getline(temp->vehicle.fuelEff,50,':');
+            //strcpy(temp->vehicle.fuelEff, tempFef);
+            file_in.getline(temp->vehicle.vehicleType,50,':');
+            //strcpy(temp->vehicle.vehicleType, tempVtp);
+            file_in.getline(temp->vehicle.engine,50,':');
+            //strcpy(temp->vehicle.engine, tempEng);
+            file_in.getline(temp->vehicle.numPeople,50,'|');
+            //strcpy(temp->vehicle.numPeople, tempNum);
+            file_in.getline(tempArr,100,'\n');
+
+            buildNestedList(temp, tempArr);
             buildList(temp);
             file_in.peek();
     //TODO not ready to parse the second list    file_in.getline(temp->vehicle.numPeople, ':', '[');
         }
-        cout << count;
     }
     file_in.close();
     return true;
@@ -98,13 +102,40 @@ bool Vehicle_List::buildList(Node * &temp)
     return true;
 }
 
+//Function to parse data read in from text file after a '|'
+//
+bool Vehicle_List::buildNestedList(Node * &temp, char * &tempArr)
+{
+    int arrLen = 0;
+    arrLen = strlen(tempArr);
+
+    int index = 0;
+    int fStart = 0;
+    int fEnd = 0;
+    int subSize = 0;
+//TODO Working on parsing the substring 
+    while(index < arrLen)
+    {
+        ++index;
+        if(index == ',')
+        {
+            fEnd = index - 1;
+            subSize = arrLen - fEnd;
+        }
+    }
+  
+    return true;
+}
+
 //Sort and display by manufacturer TODO
 //assign points for wanted features TODO
 //Assign points for unwanted features TODO
 //Sort by wishlist TODO
 //Display specific make or model TODO
 
+//*****************************************************************************
 //TODO For testing purposes, display entire list
+//*****************************************************************************
 bool Vehicle_List::displayList()
 {
     if(head)
