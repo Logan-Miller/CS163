@@ -6,7 +6,6 @@
 using namespace std;
 
 //Second Node for vehicle features
-
 struct FeatureNode
 {
     char * feature;
@@ -48,12 +47,11 @@ class Vehicle_List
 public:
     Vehicle_List();
     ~Vehicle_List();
-    //Sort and display by manufacturer TODO
-    //assign points for wanted features TODO
-    //Assign points for unwanted features TODO
-    //Sort by wishlist TODO
+    //Sort by manufacturer TODO display
+    bool sortMan();
+    bool getDeterminants(char * &unwanted, char * &wanted);
+    bool sortWishList();
     //Display specific make or model TODO
-    
     //TODO For testing purposes, display entire list
     bool displayList();
 private:
@@ -63,8 +61,9 @@ private:
     //Reads in data from an external data file parses the information, creates
     //a node from the data, passes node to build list
     bool fileRead();
-    //Recieves a node, appends the node to a list
     bool buildList(Node * &temp);
     bool buildNestedList(Node * &temp, char * &tempArr);
     bool nestedList(Node * &temp, FeatureNode * &tempFeat);
+    bool assignUnwanted(char * &unwanted);
+    bool assignWanted(char * &wanted);
 };

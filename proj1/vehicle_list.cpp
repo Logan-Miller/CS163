@@ -185,10 +185,162 @@ bool Vehicle_List::nestedList(Node * &temp, FeatureNode * &tempFeat)
 }
 
 
-//Sort and display by manufacturer TODO
-//assign points for wanted features TODO
-//Assign points for unwanted features TODO
-//Sort by wishlist TODO
+//Sort by manufacturer TODO then display
+bool Vehicle_List::sortMan()
+{
+    if(!head) return false;
+    if(!head->next) return true;
+
+    int swaps = 0;
+    bool makeSwaps = true;
+    Node * current = head;
+    Node * previous = NULL;
+    Vehicle tempVehicle;
+    int tempInt = 0;
+
+    while(current->next)
+    {
+    cout << "looking for swap" << endl;
+        previous = current;
+        current = current->next;
+        if(strcmp(current->vehicle.manufacturer, previous->vehicle.manufacturer) < 0)
+        {
+        cout << "swap found" << endl;
+            tempVehicle = previous->vehicle;
+            tempInt = previous->pointVal;
+            previous->vehicle = current->vehicle;
+            previous->pointVal = current->pointVal;
+            current->vehicle = tempVehicle;
+            current->pointVal = tempInt;
+            ++swaps;
+        }
+    }
+
+    if(swaps > 0) sortMan();
+
+    return true;
+}
+
+//Recieves an array of wanted features and an array of unwated features.
+//Passes each one to their respective functions
+bool Vehicle_List::getDeterminants(char * &unwanted, char * &wanted)
+{
+    assignUnwanted(unwanted);
+    assignWanted(wanted);
+    return true;
+}
+
+//assign points for unwanted features TODO
+bool Vehicle_List::assignUnwanted(char * &unwanted)
+{
+    Node * current = head;
+
+    while(current)
+    {
+        if(strstr(unwanted, current->vehicle.manufacturer)) 
+        current->pointVal = current->pointVal - 1;
+        if(strstr(unwanted, current->vehicle.model))
+        current->pointVal = current->pointVal - 1;
+        if(strstr(unwanted, current->vehicle.year))
+        current->pointVal = current->pointVal - 1;
+        if(strstr(unwanted, current->vehicle.price))
+        current->pointVal = current->pointVal - 1;
+        if(strstr(unwanted, current->vehicle.fuelType))
+        current->pointVal = current->pointVal - 1;
+        if(strstr(unwanted, current->vehicle.fuelEff))
+        current->pointVal = current->pointVal - 1;
+        if(strstr(unwanted, current->vehicle.vehicleType))
+        current->pointVal = current->pointVal - 1;
+        if(strstr(unwanted, current->vehicle.engine))
+        current->pointVal = current->pointVal - 1;
+        
+        FeatureNode * currentFeat = current->vehicle.featureHead;
+
+        while(currentFeat)
+        {
+            if(strstr(unwanted, currentFeat->feature))
+            current->pointVal = current->pointVal - 1;
+            currentFeat = currentFeat->next;
+        }
+        
+        current = current->next;
+    }
+
+    return true;
+}
+//Assign points for wanted features
+bool Vehicle_List::assignWanted(char * &wanted)
+{
+    Node * current = head;
+
+    while(current)
+    {
+        if(strstr(wanted, current->vehicle.manufacturer)) 
+        current->pointVal = current->pointVal + 2;
+        if(strstr(wanted, current->vehicle.model))
+        current->pointVal = current->pointVal + 2;
+        if(strstr(wanted, current->vehicle.year))
+        current->pointVal = current->pointVal + 2;
+        if(strstr(wanted, current->vehicle.price))
+        current->pointVal = current->pointVal + 2;
+        if(strstr(wanted, current->vehicle.fuelType))
+        current->pointVal = current->pointVal + 2;
+        if(strstr(wanted, current->vehicle.fuelEff))
+        current->pointVal = current->pointVal + 2;
+        if(strstr(wanted, current->vehicle.vehicleType))
+        current->pointVal = current->pointVal + 2;
+        if(strstr(wanted, current->vehicle.engine))
+        current->pointVal = current->pointVal + 2;
+        
+        FeatureNode * currentFeat = current->vehicle.featureHead;
+
+        while(currentFeat)
+        {
+            if(strstr(wanted, currentFeat->feature))
+            current->pointVal = current->pointVal + 2;
+            currentFeat = currentFeat->next;
+        }
+        
+        current = current->next;
+    }
+
+    return true;
+}
+//Sorts the list by the user's most wanted features, represented by an
+//integer value within the node
+bool Vehicle_List::sortWishList()
+{
+
+    if(!head) return false;
+    if(!head->next) return true;
+
+    int swaps = 0;
+    bool makeSwaps = true;
+    Node * current = head;
+    Node * previous = NULL;
+    Vehicle tempVehicle;
+    int tempInt = 0;
+
+    while(current->next)
+    {
+        previous = current;
+        current = current->next;
+        if(current->pointVal > previous->pointVal)
+        {
+            tempVehicle = previous->vehicle;
+            tempInt = previous->pointVal;
+            previous->vehicle = current->vehicle;
+            previous->pointVal = current->pointVal;
+            current->vehicle = tempVehicle;
+            current->pointVal = tempInt;
+            ++swaps;
+        }
+    }
+
+    if(swaps > 0) sortWishList();
+
+    return true;
+}
 //Display specific make or model TODO
 
 //*****************************************************************************

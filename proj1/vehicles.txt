@@ -1,2 +1,3 @@
 Volkswagon:Passat:2001:6600:Gas:20mpg:Stationwagon:V6:5|air bags,heating,wash|
 Honda:Civic:2001:5000:Gas:30mpg:Sedan:V6:5|air conditioning|
+Toyota:Corolla:2001:5500:Gas:35mpg:Secan:V6:5|air conditioning,dvd player,radio,bluetooth|
