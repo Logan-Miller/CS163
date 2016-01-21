@@ -1,3 +1,6 @@
-volkswagon:passat:2001:6600:Gas:20mpg:Stationwagon:V6:5|air bags,heating,wash|
-honda:civic:2001:5000:Gas:30mpg:Sedan:V6:5|air conditioning|
-toyota:corolla:2001:5500:Gas:35mpg:Secan:V6:5|air conditioning,dvd player,radio,bluetooth|
+volkswagon:passat:2001:6600:gas:20mpg:stationwagon:v6:5|air bags,heating,wash|
+honda:civic:2001:5000:gas:30mpg:sedan:v6:5|air conditioning|
+toyota:corolla:2001:5500:gas:35mpg:sedan:v6:5|air conditioning,dvd player,radio,bluetooth|
+honda:accord:2004:6500:gas:32mpg:sedan:v6:4|air conditioning,bluetooth|
+volkswagon:westfalia:1995:10000:gas:10mpg:van:v6:8|camper,stove,cupboards,casette player|
+honda:civic:2010:13000:gas:35mpg:sedan:v6:4|radio,bluetooth,cd player|

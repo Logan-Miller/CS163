@@ -1,3 +1,6 @@
+//Logan Miller
+//CS163
+//Program #1 Vehicle_List ADT
 
 #include <iostream>
 #include <cctype>
@@ -47,14 +50,9 @@ class Vehicle_List
 public:
     Vehicle_List();
     ~Vehicle_List();
-    //Sort by manufacturer TODO display
     bool sortMan();
     bool getDeterminants(char * &unwanted, char * &wanted);
-    bool sortWishList();
     bool findVehicle(char * &car);
-    
-    //TODO For testing purposes, display entire list
-    bool displayList();
 private:
     //private data members
     Node * head;
@@ -67,4 +65,8 @@ private:
     bool nestedList(Node * &temp, FeatureNode * &tempFeat);
     bool assignUnwanted(char * &unwanted);
     bool assignWanted(char * &wanted);
+    bool sortWishHelper();
+    bool sortManHelper();
+    bool displayList();
+    bool sortWishList();
 };
