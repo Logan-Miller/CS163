@@ -10,7 +10,14 @@ int main()
 {
     //Welcome screen for the user, displayed upon the programing opening
     cout << "Welcome...." << endl; //TODO
-    
+    Vehicle_List myList;
+    myList.displayList();
+
+    char * myArr = new char[15];
+    strcpy(myArr, "honda civic");
+    myList.findVehicle(myArr);
+
+
     //Prompt user for desired features / Store desired featers TODO
 
     //Prompt user for unwanted features / Store unwanted features TODO

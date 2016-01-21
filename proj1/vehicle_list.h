@@ -51,7 +51,8 @@ public:
     bool sortMan();
     bool getDeterminants(char * &unwanted, char * &wanted);
     bool sortWishList();
-    //Display specific make or model TODO
+    bool findVehicle(char * &car);
+    
     //TODO For testing purposes, display entire list
     bool displayList();
 private:

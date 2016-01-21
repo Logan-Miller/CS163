@@ -18,24 +18,10 @@ Vehicle_List::~Vehicle_List()
 //function that will create a list from said nodes.
 bool Vehicle_List::fileRead()
 {
-    //Temp arrays used for reading in strings from a text file
-    //char tempMan[50];
-    /*char tempMod[50];
-    char tempYer[50];
-    char tempPrc[50];
-    char tempFtp[50];
-    char tempFef[50];
-    char tempVtp[50];
-    char tempEng[50];
-    char tempNum[50];
-    */
     ifstream file_in;
     file_in.open("vehicles.txt");
     if(file_in)
     {
-        //TODO Parse the last line of the text file within the '[ ]', the data
-        //inside these brackets on each line of the text file will be its own
-        //LLL
         while(!file_in.eof())
         {
             Node * temp = new Node;
@@ -56,29 +42,19 @@ bool Vehicle_List::fileRead()
             char * tempArr = new char[100];
 
             file_in.getline(temp->vehicle.manufacturer,50,':');
-            //strcpy(temp->vehicle.manufacturer, tempMan);
             file_in.getline(temp->vehicle.model,50,':');
-            //strcpy(temp->vehicle.model, tempMod);
             file_in.getline(temp->vehicle.year,50,':');
-            //strcpy(temp->vehicle.year, tempYer);
             file_in.getline(temp->vehicle.price,50,':');
-            //strcpy(temp->vehicle.price, tempPrc);
             file_in.getline(temp->vehicle.fuelType,50,':');
-            //strcpy(temp->vehicle.fuelType, tempFtp);
             file_in.getline(temp->vehicle.fuelEff,50,':');
-            //strcpy(temp->vehicle.fuelEff, tempFef);
             file_in.getline(temp->vehicle.vehicleType,50,':');
-            //strcpy(temp->vehicle.vehicleType, tempVtp);
             file_in.getline(temp->vehicle.engine,50,':');
-            //strcpy(temp->vehicle.engine, tempEng);
             file_in.getline(temp->vehicle.numPeople,50,'|');
-            //strcpy(temp->vehicle.numPeople, tempNum);
             file_in.getline(tempArr,100,'\n');
 
             buildNestedList(temp, tempArr);
             buildList(temp);
             file_in.peek();
-    //TODO not ready to parse the second list    file_in.getline(temp->vehicle.numPeople, ':', '[');
         }
     }
     file_in.close();
@@ -147,15 +123,6 @@ bool Vehicle_List::buildNestedList(Node * &temp, char * &tempArr)
         ++index;
     }
     
-   /* if(count == 0)
-    {
-        FeatureNode * tempFeat = new FeatureNode;
-        tempFeat->feature = new char[100];
-        tempFeat->next = NULL;
-        strcpy(tempFeat->feature,tempArr);
-        nestedList(temp, tempFeat);
-    }*/
-
     return true;
 }
 
@@ -230,7 +197,7 @@ bool Vehicle_List::getDeterminants(char * &unwanted, char * &wanted)
     return true;
 }
 
-//assign points for unwanted features TODO
+//assign points for unwanted features
 bool Vehicle_List::assignUnwanted(char * &unwanted)
 {
     Node * current = head;
@@ -341,7 +308,48 @@ bool Vehicle_List::sortWishList()
 
     return true;
 }
-//Display specific make or model TODO
+//Displays a specific make or model 
+bool Vehicle_List::findVehicle(char * &car)
+{
+   
+    Node * current = head;
+
+    while(current)
+    {
+        if(strstr(car, current->vehicle.manufacturer) 
+        && strstr(car, current->vehicle.model))
+        {
+        
+            FeatureNode * currentFeat = current->vehicle.featureHead;
+
+            cout << current->vehicle.manufacturer << endl;
+            cout << current->vehicle.model << endl;
+            cout << current->vehicle.year << endl;
+            cout << current->vehicle.price << endl;
+            cout << current->vehicle.fuelType << endl;
+            cout << current->vehicle.fuelEff << endl;
+            cout << current->vehicle.vehicleType << endl;
+            cout << current->vehicle.engine << endl;
+            cout << "*********" << endl;
+            cout << "Available Features :";
+            while(currentFeat)
+            {
+                cout << currentFeat->feature << " ";
+                currentFeat = currentFeat->next;
+            }
+            
+            cout << endl << "********" << endl;
+            cout << endl << endl;
+        }
+        
+        current = current->next;
+    }
+
+    return true;
+}
+
+
+
 
 //*****************************************************************************
 //TODO For testing purposes, display entire list
