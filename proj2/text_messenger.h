@@ -10,21 +10,21 @@ struct text
     bool doNotDist;
 };
 
-//TODO nodes for the stack ADT
+//nodes for the stack ADT
 struct s_node
 {
     text * textMessages;
     s_node * next;
 };
 
-//TODO nodes for the queue ADT
+//nodes for the queue ADT
 struct q_node
 {
     text textMessage;
     q_node * next;
 };
 
-//TODO class for managing new texts
+//class for managing new texts
 class Stack
 {
 public:
@@ -37,7 +37,7 @@ private:
     int top_index;
 };
 
-//TODO class for managing saved texts
+//class for managing saved texts
 class Queue
 {
 public:

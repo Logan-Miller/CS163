@@ -119,13 +119,59 @@ Queue::~Queue()
 //Adds a data item to the queue. TODO
 int Queue::enqueue(text &textMessage)
 {
+    //Case if the list is empty when trying to add
+    if(!rear)
+    {
+        rear = new q_node;
+        rear->textMessage = textMessage;
+        rear->next = rear;
+        return 1;
+    }
+    
+    //Case where there is data to append to
+    if(rear->next)
+    {
+        q_node * temp = new q_node;
+        temp->next = rear->next;
+        temp->textMessage = textMessage;
+        rear->next = temp;
+        rear = temp;
+        return 1;
+    }
 
+    //If neither of the above cases were met, default to failure.
+    return 0;
 }
 
 //removes a data item from the queue. TODO
 int Queue::dequeue()
 {
+    //Case 1: List is empty, nothing to dequeue, return failure.
+    if(!rear) return 0;
 
+    //Case 2: List has one node, dequeue data
+    if(rear->next == rear)
+    {
+        delete [] rear->textMessage.sender;
+        delete [] rear->textMessage.message;
+        delete rear;
+        rear = NULL;
+        return 1;
+    }
+
+    //Case 3: List has more than one item
+    if(rear->next)
+    {
+        q_node * temp = rear->next;
+        rear->next = temp->next;
+        delete [] temp->textMessage.sender;
+        delete [] temp->textMessage.message;
+        delete temp;
+        return 1;
+    }
+    
+    //Case 4: None of the cases above were met, default to failure
+    return 0;
 }
 
 //*******************Text Messenger ADT Functions***************
