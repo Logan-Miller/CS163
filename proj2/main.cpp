@@ -16,6 +16,11 @@ int main()
     if(myStack.pop() == 0) cout << "failure 2" << endl;
     if(myStack.push(myText) == 0) cout << "failure 3" << endl;
 
+    //Queue myQueue;
+    //if(myQueue.enqueue(myText) == 0) cout << "failure 1" << endl;
+    //if(myQueue.dequeue() == 0) cout << "failure 2" << endl;
+    //if(myQueue.enqueue(myText) == 0) cout << "failure 3" << endl;
+
     //TODO TESTING
 
     return 0;

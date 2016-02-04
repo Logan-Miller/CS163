@@ -8,8 +8,30 @@ Stack::Stack()
 }
 
 Stack::~Stack()
-{
-
+{   
+    //Loop used to cycle through the list
+    while(head)
+    {
+        s_node * temp = head;
+        head = head->next;
+        //If the index is passed the bounds, set it to the last possible index
+        if(top_index == 5) top_index = 4;
+        //Loop through the array started at the bottom and working back to top
+        while(top_index >= 0)
+        {
+            //text messages have dynamic memory, delete this memory
+            delete [] temp->textMessages[top_index].sender;
+            delete [] temp->textMessages[top_index].message;
+            //Move the index back
+            --top_index;
+        }
+        //Once all dynamic memory in the array has been deleted, delete array
+        delete [] temp->textMessages;
+        //If there is another node to delete from, set index to the last
+        //element, otherwise set it top_index to 0;
+        if(head) top_index = 4;
+        if(!head) top_index = 0;
+    }
 }
 
 //Pushes a text message onto the stack TODO
@@ -30,7 +52,7 @@ int Stack::push(text &textMessage)
     //If the stack has nodes, but the head's array is full, create a new node
     //append data to that node, connect the new node to the list, make the new
     //node head.
-    if(top_index >= 4)
+    if(top_index >= 5)
     {
         top_index = 0;
         s_node * temp = new s_node;
@@ -44,7 +66,7 @@ int Stack::push(text &textMessage)
 
     //If there is data and the current array is not full append a text message
     //to the array and increment top_index
-    if(top_index < 4)
+    if(top_index < 5)
     {
         head->textMessages[top_index] = textMessage;
         ++top_index;
@@ -73,6 +95,7 @@ int Stack::pop()
         if(!head->next)
         {
             delete head;
+            head = NULL;
             return 1;
         }
 
@@ -93,8 +116,9 @@ int Stack::pop()
     //TODO possible memory problem. The text is not deleted from the array
     //If we popped once, and then pushed onto the stack I'm not sure if the
     //pushed text message would overwrite the previous popped text message
-    if(top_index <= 4)
+    if(top_index <= 5)
     {
+        if(top_index == 5) top_index = 4;
         delete head->textMessages[top_index].sender;
         delete head->textMessages[top_index].message;
         --top_index;
