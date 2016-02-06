@@ -32,6 +32,7 @@ public:
     ~Stack();
     int push(text &textMessage);
     int pop();
+    int s_peak(text &textMessage);
 private:
     s_node * head;
     int top_index;
@@ -45,6 +46,25 @@ public:
     ~Queue();
     int enqueue(text &textMessage);
     int dequeue();
+    int q_peak(text &textMessage);
 private:
     q_node * rear;
+};
+
+//Class for managing new and saved text messages
+class Messenger
+{
+public:
+    Messenger();
+    ~Messenger();
+    int recieveText(text &textMessage);
+    int viewNewText();
+    //int viewSavedText();
+    //int saveNew();
+private:
+    int viewNewHelper(text &textMessage);
+    //int saveNewHelper(text &textMessage);
+
+    Stack newTexts;
+    Queue savedTexts;
 };

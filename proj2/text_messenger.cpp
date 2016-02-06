@@ -1,6 +1,8 @@
 #include "text_messenger.h"
 
-//*******************Stack ADT functions************************
+//*****************************************************************************
+//*******************Stack ADT functions***************************************
+//*****************************************************************************
 Stack::Stack()
 {
     head = NULL;
@@ -129,7 +131,32 @@ int Stack::pop()
     return 0;
 }
 
-//*******************Queue ADT Functions************************
+int Stack::s_peak(text &textMessage)
+{
+    if(!head) return 0;
+    
+    if(top_index > 0)
+    {   
+        strcpy(textMessage.sender, head->textMessages[top_index - 1].sender);
+        strcpy(textMessage.message, head->textMessages[top_index - 1].message);
+        textMessage.doNotDist = head->textMessages[top_index - 1].doNotDist;
+        return 1;
+    }
+
+    if(top_index == 0)
+    {   
+        strcpy(textMessage.sender, head->textMessages[0].sender);
+        strcpy(textMessage.message, head->textMessages[0].message);
+        textMessage.doNotDist = head->textMessages[0].doNotDist;
+        return 1;
+    }
+
+    return 0;
+}
+
+//*****************************************************************************
+//*******************Queue ADT Functions***************************************
+//*****************************************************************************
 Queue::Queue()
 {
     rear = NULL;
@@ -137,7 +164,20 @@ Queue::Queue()
 
 Queue::~Queue()
 {
+    if(rear)
+    {
+        q_node * current = rear->next;
+        rear->next = NULL;
 
+        while(current)
+        {
+            q_node * temp = current;
+            current = current->next;
+            delete [] temp->textMessage.sender;
+            delete [] temp->textMessage.message;
+            delete temp;
+        }
+    }
 }
 
 //Adds a data item to the queue. TODO
@@ -198,6 +238,70 @@ int Queue::dequeue()
     return 0;
 }
 
-//*******************Text Messenger ADT Functions***************
+//TODO peak function for queue
+int Queue::q_peak(text &textMessage)
+{
+    if(!rear) return 0;
+
+    if(rear)
+    {
+        strcpy(textMessage.sender, rear->next->textMessage.sender);
+        strcpy(textMessage.message, rear->next->textMessage.message);
+        textMessage.doNotDist = rear->next->textMessage.message;
+        return 1;
+    }
+
+    return 0;
+}
+
+//*******************Text Messenger ADT Functions******************************
+
+//class Messenger recieves new text messages, allows the user to read new text
+//messages, save text messages, and reads off saved text messages. 
+//TODO members Stack newTexts Queue savedTexts
+
+Messenger::Messenger()
+{
+    Stack newTexts;
+    Queue savedTexts;
+}
+
+Messenger::~Messenger()
+{
+
+}
+
+int Messenger::recieveText(text &textMessage)
+{
+    if(newTexts.push(textMessage) == 1) return 1;
+
+    else return 0;
+}
+
+int Messenger::viewNewHelper(text &textMessage)
+{
+    return newTexts.s_peak(textMessage);
+}
+
+int Messenger::viewNewText()
+{
+    text textMessage;
+    textMessage.sender = new char[10];
+    textMessage.message = new char[10];
+    if(viewNewHelper(textMessage) == 1)
+    {
+        cout << textMessage.sender << endl
+             << textMessage.message << endl;
+        delete [] textMessage.sender;
+        delete [] textMessage.message;
+        return 1;
+    }
+    
+    delete [] textMessage.sender;
+    delete [] textMessage.message;
+    return 0;
+}
+
+
 
 
