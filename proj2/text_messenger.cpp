@@ -1,3 +1,7 @@
+//Logan Miller
+//CS163
+//Assignment 2
+
 #include "text_messenger.h"
 
 //*****************************************************************************
@@ -36,7 +40,7 @@ Stack::~Stack()
     }
 }
 
-//Pushes a text message onto the stack TODO
+//Pushes a text message onto the stack
 int Stack::push(text &textMessage)
 {
     //If the stack is empty, make a new node, add the text to the array, shift
@@ -180,7 +184,7 @@ Queue::~Queue()
     }
 }
 
-//Adds a data item to the queue. TODO
+//Adds a data item to the queue.
 int Queue::enqueue(text &textMessage)
 {
     //Case if the list is empty when trying to add
@@ -238,7 +242,7 @@ int Queue::dequeue()
     return 0;
 }
 
-//TODO peak function for queue
+//peak function for queue
 int Queue::q_peak(text &textMessage)
 {
     if(!rear) return 0;
@@ -254,23 +258,42 @@ int Queue::q_peak(text &textMessage)
     return 0;
 }
 
+//Function used for shifting rear to its next pointer
+int Queue::shiftQueue()
+{
+    if(!rear) return 0;
+
+    if(rear)
+    {
+        rear = rear->next;
+        return 1;
+    }
+
+    return 0;
+}
+
+//*****************************************************************************
 //*******************Text Messenger ADT Functions******************************
+//*****************************************************************************
 
 //class Messenger recieves new text messages, allows the user to read new text
 //messages, save text messages, and reads off saved text messages. 
 //TODO members Stack newTexts Queue savedTexts
 
+//Constructor for the Messenger class
 Messenger::Messenger()
 {
     Stack newTexts;
     Queue savedTexts;
 }
 
+//Destructor for the Messenger class
 Messenger::~Messenger()
 {
 
 }
 
+//Function recieves a text and passes the text to the stack
 int Messenger::recieveText(text &textMessage)
 {
     if(newTexts.push(textMessage) == 1) return 1;
@@ -278,20 +301,19 @@ int Messenger::recieveText(text &textMessage)
     else return 0;
 }
 
-int Messenger::viewNewHelper(text &textMessage)
-{
-    return newTexts.s_peak(textMessage);
-}
-
+//Functions peaks the text on the stack, s_peak provides the data, function
+//then displays the data. Function deletes the dynamic memory before quitting
 int Messenger::viewNewText()
 {
     text textMessage;
-    textMessage.sender = new char[10];
-    textMessage.message = new char[10];
-    if(viewNewHelper(textMessage) == 1)
+    textMessage.sender = new char[50];
+    textMessage.message = new char[150];
+    if(newTexts.s_peak(textMessage) == 1)
     {
+        cout << endl;
         cout << textMessage.sender << endl
              << textMessage.message << endl;
+        cout << endl;
         delete [] textMessage.sender;
         delete [] textMessage.message;
         return 1;
@@ -301,6 +323,110 @@ int Messenger::viewNewText()
     delete [] textMessage.message;
     return 0;
 }
+
+//Function uses the s_peak function to get a text message, it then enqueues the
+//text onto the queue
+int Messenger::saveNewText(int choice)
+{
+    //Case 1: user wishes to save the new text
+    if(choice == 1)
+    {
+        text textMessage;
+        textMessage.sender = new char[50];
+        textMessage.message = new char[150];
+        
+        if(newTexts.s_peak(textMessage) == 1)
+        {
+            if(savedTexts.enqueue(textMessage) == 1)
+            {
+                newTexts.pop();
+                return 1;
+            }
+        }
+
+        delete [] textMessage.sender;
+        delete [] textMessage.message;
+        return 0;
+    }
+
+    //case 2: path to pop
+    if(choice == 2)
+    {
+        if(newTexts.pop() == 1) return 1;
+        return 0;
+    }
+
+    else return 0;
+}
+
+//Functions calls the q_peak function. Then displays the text message.
+int Messenger::viewSavedText()
+{
+    text textMessage;
+    textMessage.sender = new char[50];
+    textMessage.message = new char[150];
+    if(savedTexts.q_peak(textMessage) == 1)
+    {
+        cout << endl;
+        cout << textMessage.sender << endl
+             << textMessage.message << endl;
+        cout << endl;
+        delete [] textMessage.sender;
+        delete [] textMessage.message;
+        return 1;
+    }
+    
+    delete [] textMessage.sender;
+    delete [] textMessage.message;
+    return 0;
+}
+
+//Since no real messages will be sent by the user this function is
+//for showe only.
+int Messenger::sendMessage(text &textMessage)
+{
+    delete [] textMessage.sender;
+    delete [] textMessage.message;
+    return 1;
+}
+
+
+int Messenger::processSavedText(int choice)
+{
+    //If user wishes to retain the saved text, retain the saved text. The shift
+    //queue function causes the text viewed to become the last text in the 
+    //queue, "saving" it
+    if(choice == 1)
+    {
+        if(savedTexts.shiftQueue() == 1) return 1;
+        return 0;
+    }
+
+    //If the user no longer wants to retain the saved text, delete the text
+    if(choice == 2)
+    {
+        if(savedTexts.dequeue() == 1) return 1;
+        return 0;
+    }
+
+    //no choices met, default to failure
+    else return 0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,3 +1,7 @@
+//Logan Miller
+//CS163
+//Assignment 2
+
 #include <iostream>
 #include <cstring>
 using namespace std;
@@ -47,6 +51,7 @@ public:
     int enqueue(text &textMessage);
     int dequeue();
     int q_peak(text &textMessage);
+    int shiftQueue();
 private:
     q_node * rear;
 };
@@ -59,12 +64,13 @@ public:
     ~Messenger();
     int recieveText(text &textMessage);
     int viewNewText();
-    //int viewSavedText();
-    //int saveNew();
+    int saveNewText(int choice);
+    int viewSavedText();
+    int processSavedText(int choice);
+    int sendMessage(text &textMessage);
 private:
-    int viewNewHelper(text &textMessage);
-    //int saveNewHelper(text &textMessage);
-
     Stack newTexts;
     Queue savedTexts;
 };
+
+
