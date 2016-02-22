@@ -130,7 +130,6 @@ int Table::insert(Course &aCourse)
     char * cName = new char[50];
     aCourse.getNum(cNum);
     aCourse.getName(cName);
-
     int index = hash_func(cNum);
     int index2 = hash_func(cName);
     node * temp = new node;
@@ -152,15 +151,44 @@ int Table::insert(Course &aCourse)
 }
 
 //TODO
-int Table::retrieveByNum(char &number)
+int Table::retrieveByNum(char * number, Course &course)
 {
+    int index = hash_func(number);
+    node * current = hash_table[index];
+    while(current->next)
+    {
+        char * temp = new char[50];
+        current->course.getNum(temp);
+        if(strcmp(temp, number) == 0)
+        {
+            course.copy_course(current->course);
+            return 1;
+        }
 
+        delete [] temp;
+    }
+    return 0;
 }
 
 //TODO
-int Table::retrieveByName(char &name)
+int Table::retrieveByName(char * name, Course &course)
 {
+    
+    int index = hash_func(name);
+    node * current = hash_table[index];
+    while(current->next)
+    {
+        char * temp = new char[50];
+        current->course.getName(temp);
+        if(strcmp(temp, name) == 0)
+        {
+            course.copy_course(current->course);
+            return 1;
+        }
 
+        delete [] temp;
+    }
+    return 0;
 }
 
 //TODO
@@ -184,7 +212,8 @@ int Table::hash_func(char * key) const
     {
         sum = sum + *(key + i);
     }
-
+    //TODO
+    //cout << endl << sum % hash_table_size << endl;
     return sum % hash_table_size;
 }
 

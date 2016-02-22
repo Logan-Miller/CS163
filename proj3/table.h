@@ -34,8 +34,8 @@ public:
     Table(int size = 5);
     ~Table();
     int insert(Course &aCourse);
-    int retrieveByNum(char &number);
-    int retrieveByName(char &name);
+    int retrieveByNum(char * number, Course &course);
+    int retrieveByName(char * name, Course &course);
     int display(char &number);
     int display_all();
 private:
