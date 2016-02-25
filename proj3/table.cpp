@@ -119,32 +119,51 @@ int Course::name_match(char * name)
 //*****************************************************************************
 //*****************Table ADT Functions*****************************************
 //*****************************************************************************
+
+//Constructor for Table class. Initializes two hash tables, one for tracking 
+//courses by name and one for tracking courses by number
 Table::Table(int size)
 {
     hash_table_size = size;
-    hash_table = new node * [size];
+    
+    num_hash_table = new node * [size];
     for(int i = 0; i < size; ++i)
     {
-        hash_table[i] = NULL;
+        num_hash_table[i] = NULL;
+    }
+    
+    name_hash_table = new node * [size];
+    for(int i = 0; i < size; ++i)
+    {
+        name_hash_table[i] = NULL;
     }
 }
 
 //TODO
+//Destructor for the Table ADT, deallocates all memory for both hash tables
 Table::~Table()
 {
     
 }
 
+//Recieves a course, makes two copies, one copy for the course number and one
+//copy for the course name. Uses the hash function to find an index for both
+//the number copy and the name copy. Appends the number course copy to the 
+//number hash table. Appends the name course copy to the name hash table. 
 int Table::insert(Course &aCourse)
 {
     char * cNum = new char[50];
     char * cName = new char[50];
+    
     aCourse.getNum(cNum);
     aCourse.getName(cName);
+    
     int index = hash_func(cNum);
     int index2 = hash_func(cName);
+    
     node * temp = new node;
     node * temp2 = new node;
+    
     if(!temp->course.copy_course(aCourse) || 
        !temp2->course.copy_course(aCourse))
     {
@@ -153,25 +172,31 @@ int Table::insert(Course &aCourse)
         return 0;
     }
 
-    temp->next = hash_table[index];
-    hash_table[index] = temp;
+    temp->next = num_hash_table[index];
+    num_hash_table[index] = temp;
     
-    temp2->next = hash_table[index2];
-    hash_table[index2] = temp2;
+    temp2->next = name_hash_table[index2];
+    name_hash_table[index2] = temp2;
     return 1;
 }
-
+//TODO 
+//Issues with the retrieval function, course passed to function not copying
+//correctly
+//TODO
+//Recieves a number to search for and a course to append to. Uses the hash
+//function
 int Table::retrieveByNum(char * number, Course &course)
 {
     int index = hash_func(number);
-    node * current = hash_table[index];
+    node * current = num_hash_table[index];
     while(current->next)
     {
         char * temp = new char[50];
         current->course.getNum(temp);
         if(strcmp(temp, number) == 0)
         {
-            course.copy_course(current->course);
+            //course.copy_course(current->course);
+            course.copy_course(course);
             return 1;
         }
 
@@ -184,14 +209,15 @@ int Table::retrieveByName(char * name, Course &course)
 {
     
     int index = hash_func(name);
-    node * current = hash_table[index];
+    node * current = name_hash_table[index];
     while(current->next)
     {
         char * temp = new char[50];
         current->course.getName(temp);
         if(strcmp(temp, name) == 0)
         {
-            course.copy_course(current->course);
+            //course.copy_course(current->course);
+            course.copy_course(course);
             return 1;
         }
 
@@ -202,7 +228,7 @@ int Table::retrieveByName(char * name, Course &course)
 
 int Table::display_number(char * number)
 {
-    node * current = hash_table[hash_func(number)];
+    node * current = num_hash_table[hash_func(number)];
     int count = 0;
     
     while(current)
@@ -220,6 +246,7 @@ int Table::display_number(char * number)
     return 0;
 }
 
+/*
 int Table::display_name(char * name)
 {
     node * current = hash_table[hash_func(name)];
@@ -238,7 +265,7 @@ int Table::display_name(char * name)
 
     if(count > 0) return 1;
     return 0;
-}
+}*/
 
 int Table::display_all()
 {
@@ -246,7 +273,7 @@ int Table::display_all()
 
     for(int i = 0; i < hash_table_size; ++i)
     {
-        current = hash_table[i];
+        current = num_hash_table[i];
         while(current)
         {
             current->course.display_course();

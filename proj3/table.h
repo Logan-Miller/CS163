@@ -39,10 +39,11 @@ public:
     int retrieveByNum(char * number, Course &course);
     int retrieveByName(char * name, Course &course);
     int display_number(char * number);
-    int display_name(char * name);
+    //int display_name(char * name);
     int display_all();
 private:
-    node ** hash_table;
+    node ** num_hash_table;
+    node ** name_hash_table;
     int hash_func(char * key) const;
     int hash_table_size;
 };
