@@ -104,6 +104,18 @@ int Course::getName(char * name)
     return 1;
 }
 
+int Course::number_match(char * number)
+{
+    if(strcmp(number, courseNum) == 0) return 1;
+    return 0;
+}
+
+int Course::name_match(char * name)
+{
+    if(strcmp(name, courseName) == 0) return 1;
+    return 0;
+}
+
 //*****************************************************************************
 //*****************Table ADT Functions*****************************************
 //*****************************************************************************
@@ -123,7 +135,6 @@ Table::~Table()
     
 }
 
-//TODO
 int Table::insert(Course &aCourse)
 {
     char * cNum = new char[50];
@@ -150,7 +161,6 @@ int Table::insert(Course &aCourse)
     return 1;
 }
 
-//TODO
 int Table::retrieveByNum(char * number, Course &course)
 {
     int index = hash_func(number);
@@ -170,7 +180,6 @@ int Table::retrieveByNum(char * number, Course &course)
     return 0;
 }
 
-//TODO
 int Table::retrieveByName(char * name, Course &course)
 {
     
@@ -191,19 +200,63 @@ int Table::retrieveByName(char * name, Course &course)
     return 0;
 }
 
-//TODO
-int Table::display(char &number)
+int Table::display_number(char * number)
 {
+    node * current = hash_table[hash_func(number)];
+    int count = 0;
+    
+    while(current)
+    {
+        if(current->course.number_match(number) == 1)
+        {
+            ++count;
+            current->course.display_course();
+        }
+        
+        current = current->next;
+    }
 
+    if(count > 0) return 1;
+    return 0;
 }
 
-//TODO
+int Table::display_name(char * name)
+{
+    node * current = hash_table[hash_func(name)];
+    int count = 0;
+    
+    while(current)
+    {
+        if(current->course.name_match(name) == 1)
+        {
+            ++count;
+            current->course.display_course();
+        }
+
+        current = current->next;
+    }
+
+    if(count > 0) return 1;
+    return 0;
+}
+
 int Table::display_all()
 {
+    node * current = NULL;
 
+    for(int i = 0; i < hash_table_size; ++i)
+    {
+        current = hash_table[i];
+        while(current)
+        {
+            current->course.display_course();
+            current = current->next;
+        }
+    }    
+
+    return 1;
 }
 
-//TODO
 int Table::hash_func(char * key) const
 {
     int arrSize = strlen(key);
@@ -212,8 +265,6 @@ int Table::hash_func(char * key) const
     {
         sum = sum + *(key + i);
     }
-    //TODO
-    //cout << endl << sum % hash_table_size << endl;
     return sum % hash_table_size;
 }
 

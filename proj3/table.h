@@ -12,6 +12,8 @@ public:
     int display_course();
     int getNum(char * number);
     int getName(char * name);
+    int number_match(char * number);
+    int name_match(char * name);
 
 private:
     char * courseNum;
@@ -36,7 +38,8 @@ public:
     int insert(Course &aCourse);
     int retrieveByNum(char * number, Course &course);
     int retrieveByName(char * name, Course &course);
-    int display(char &number);
+    int display_number(char * number);
+    int display_name(char * name);
     int display_all();
 private:
     node ** hash_table;
