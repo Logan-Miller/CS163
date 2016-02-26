@@ -17,7 +17,15 @@
 
 int main()
 {
-    Course myCourse;
+  
+    Table myTable;
+
+    cout << "This program allows you to search for classes either by course"
+         << " name or course number. Additionally you are able to insert new"
+         << " classes into the available classes as well as ";
+         //TODO
+  
+  /*  Course myCourse;
     myCourse.create_course();
     
     Course aCourse;
@@ -48,7 +56,7 @@ int main()
     cout << endl << endl << "retrieving course 2, and displaying " << endl << endl;
     myTable.retrieveByName(temp3, myCourse);
     myCourse.display_course();
-    
+    */
     
 
     /*char * temp = new char[50];

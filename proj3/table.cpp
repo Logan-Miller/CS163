@@ -139,11 +139,29 @@ Table::Table(int size)
     }
 }
 
-//TODO
 //Destructor for the Table ADT, deallocates all memory for both hash tables
 Table::~Table()
 {
-    
+    node * head = NULL;
+    node * temp = NULL;
+    for(int i = 0; i < hash_table_size; ++i)
+    {
+        head = num_hash_table[i];
+        while(head)
+        {   
+            temp = head;
+            head = head->next;
+            delete temp;
+        }
+
+        head = name_hash_table[i];
+        while(head)
+        {
+            temp = head;
+            head = head->next;
+            delete temp;
+        }
+    }   
 }
 
 //Recieves a course, makes two copies, one copy for the course number and one
@@ -179,24 +197,20 @@ int Table::insert(Course &aCourse)
     name_hash_table[index2] = temp2;
     return 1;
 }
-//TODO 
-//Issues with the retrieval function, course passed to function not copying
-//correctly
-//TODO
+
 //Recieves a number to search for and a course to append to. Uses the hash
 //function
 int Table::retrieveByNum(char * number, Course &course)
 {
     int index = hash_func(number);
     node * current = num_hash_table[index];
-    while(current->next)
+    while(current)
     {
         char * temp = new char[50];
         current->course.getNum(temp);
         if(strcmp(temp, number) == 0)
         {
-            //course.copy_course(current->course);
-            course.copy_course(course);
+            course.copy_course(current->course);
             return 1;
         }
 
@@ -210,14 +224,13 @@ int Table::retrieveByName(char * name, Course &course)
     
     int index = hash_func(name);
     node * current = name_hash_table[index];
-    while(current->next)
+    while(current)
     {
         char * temp = new char[50];
         current->course.getName(temp);
         if(strcmp(temp, name) == 0)
         {
-            //course.copy_course(current->course);
-            course.copy_course(course);
+            course.copy_course(current->course);
             return 1;
         }
 
