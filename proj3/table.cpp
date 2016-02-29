@@ -48,6 +48,7 @@ int Course::create_course()
     cout << "Enter a course description: ";
     cin.get(courseDesc, 200, '\n');
     cin.ignore(200, '\n');
+    cout << endl << endl << endl;
 
     return 1;
 }
@@ -87,6 +88,7 @@ int Course::display_course()
     cout << CRN << endl;
     cout << courseSched << endl;
     cout << courseDesc << endl;
+    cout << endl;
     return 1;
 }
 
@@ -258,27 +260,6 @@ int Table::display_number(char * number)
     if(count > 0) return 1;
     return 0;
 }
-
-/*
-int Table::display_name(char * name)
-{
-    node * current = hash_table[hash_func(name)];
-    int count = 0;
-    
-    while(current)
-    {
-        if(current->course.name_match(name) == 1)
-        {
-            ++count;
-            current->course.display_course();
-        }
-
-        current = current->next;
-    }
-
-    if(count > 0) return 1;
-    return 0;
-}*/
 
 int Table::display_all()
 {
