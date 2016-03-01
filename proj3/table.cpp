@@ -3,6 +3,7 @@
 //*****************************************************************************
 //*****************Class course************************************************
 //*****************************************************************************
+//Course constructor, sets all dynamic memory.
 Course::Course()
 {
     courseNum = new char[50];
@@ -13,6 +14,7 @@ Course::Course()
     courseDesc = new char[200];
 }
 
+//Course destructor deletes all dynamic memory within the course
 Course::~Course()
 {
     delete [] courseNum;
@@ -21,6 +23,7 @@ Course::~Course()
     delete [] courseDesc;
 }
 
+//Create course prompts the user to enter in the required data for a course
 int Course::create_course()
 {
     cout << "Enter a course number: ";
@@ -53,6 +56,10 @@ int Course::create_course()
     return 1;
 }
 
+//Copy course checks if the current course being copied to has any data saved
+//if there is data it deletes dynamic memory. It then creates memory enough
+//to hold the data it is copying from. Then the current course data is copied 
+//from the supplied course's data.
 int Course::copy_course(const Course &copy_from)
 {
     if(!copy_from.courseNum || !copy_from.courseName || 
@@ -77,6 +84,7 @@ int Course::copy_course(const Course &copy_from)
     return 1;
 }
 
+//Display course outputs all data within the course to the user
 int Course::display_course()
 {
    
@@ -92,6 +100,8 @@ int Course::display_course()
     return 1;
 }
 
+//Get num returns 0 if the course number is NULL. Otherwise it copys the course
+//number and saves it to the supplied string.
 int Course::getNum(char * number)
 {
     if(!courseNum) return 0;
@@ -99,6 +109,8 @@ int Course::getNum(char * number)
     return 1;
 }
 
+//Get name returns 0 if the course name is NULL. Otherwise it copys the course
+//name and saves it to the supplied string.
 int Course::getName(char * name)
 {
     if(!courseName) return 0;
@@ -106,6 +118,8 @@ int Course::getName(char * name)
     return 1;
 }
 
+//Number match and name match both check if a supplied string matches the
+//course's number or name
 int Course::number_match(char * number)
 {
     if(strcmp(number, courseNum) == 0) return 1;
@@ -123,7 +137,8 @@ int Course::name_match(char * name)
 //*****************************************************************************
 
 //Constructor for Table class. Initializes two hash tables, one for tracking 
-//courses by name and one for tracking courses by number
+//courses by name and one for tracking courses by number. Both will be of the
+//same size
 Table::Table(int size)
 {
     hash_table_size = size;
@@ -201,7 +216,10 @@ int Table::insert(Course &aCourse)
 }
 
 //Recieves a number to search for and a course to append to. Uses the hash
-//function
+//function to find the index of the desired course number. It then iterates
+//through the list at the array's index, checking if the supplied course 
+//number matches data within the list. If so the course is copied to the 
+//supplied course. If nothing is found 0 is returned. 
 int Table::retrieveByNum(char * number, Course &course)
 {
     int index = hash_func(number);
@@ -221,6 +239,11 @@ int Table::retrieveByNum(char * number, Course &course)
     return 0;
 }
 
+//Recieves a name to search for and a course to append to. Uses the hash
+//function to find the index of the desired course name. It then iterates
+//through the list at the array's index, checking if the supplied course 
+//name matches data within the list. If so the course is copied to the 
+//supplied course. If nothing is found 0 is returned. 
 int Table::retrieveByName(char * name, Course &course)
 {
     
@@ -241,6 +264,10 @@ int Table::retrieveByName(char * name, Course &course)
     return 0;
 }
 
+//Display Number is supplied a course number to search for. It iterates through
+//the array, and then iterates through every list searchign for course's 
+//matching the supplied course number. If a match is found it is displayed.
+//If no matches are found returns 0.
 int Table::display_number(char * number)
 {
     node * current = num_hash_table[hash_func(number)];
@@ -261,6 +288,10 @@ int Table::display_number(char * number)
     return 0;
 }
 
+//Display all iterates through the number hash table, displaying all data 
+//within. Since both hash tables have identical data, just stored at different
+//indecis, only one of the hash tables has to be displayed to display all the
+//data
 int Table::display_all()
 {
     node * current = NULL;
@@ -278,6 +309,10 @@ int Table::display_all()
     return 1;
 }
 
+//Hash function recieves a string and finds the length of the array, and 
+//creates an int value based on each ascii value at each index of the array.
+//It then returns this sum, modded by the size of the array so that the index
+//returned will be within the bounds of the array.
 int Table::hash_func(char * key) const
 {
     int arrSize = strlen(key);
