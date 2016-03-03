@@ -3,6 +3,11 @@
 //*****************************************************************************
 //*****************Class course************************************************
 //*****************************************************************************
+
+//Course is an object consisting of 4 strings and 2 integers. Functions for
+//a course include, inputing the data into the object, copying the object, 
+//getting the course name or number, and displaying the courses data 
+
 //Course constructor, sets all dynamic memory.
 Course::Course()
 {
@@ -150,28 +155,174 @@ Table::~Table()
 
 }
 
-//TODO
+//Insert calls its helper function to the actual recursion and insert a course
+//into the BST
 int Table::insert_course(Course &course)
 {
-
+    if(insert_helper(root, course) == 1) return 1;
+    return 0;
 }
 
+//Insert helper is where the actual recursion takes place for inserting into
+//the BST. Recursion runs until root is NULL. It will then insert a new root
+//into the BST. Otherwise it checks whether it should travers left or right
+//throughout the BST
+int Table::insert_helper(node * &root, Course &course)
+{
+    if(!root)
+    {
+        root = new node;
+        root->course.copy_course(course);
+        root->left = NULL;
+        root->right = NULL;
+        return 1;
+    }
+    
+    char * temp = new char[50];
+    char * temp2 = new char[50];
+    course.getNum(temp);
+    root->course.getNum(temp2);
+    
+    if(strcmp(temp, temp2) < 0)
+    {
+        delete [] temp;
+        delete [] temp2;
+        return insert_helper(root->left, course);
+    }
+
+    if(strcmp(temp, temp2) >= 0)
+    {
+        delete [] temp;
+        delete [] temp2;
+        return insert_helper(root->right, course);
+    }
+}
+
+//Should recieve a number to search for throughout the BST and an array of
+//pointers to courses that it will fill. It will also recieve an integer for 
+//keeping track of the number of matches found.
 //TODO
-int Table::retrieve_num(char * number, Course &course)
+int Table::retrieve_num(char * number, Course ** &courses)
 {
 
+    int count = 0;
+    count = find_matches(number, root);
+    if(count == 0) return 0;
+    
+    int index = 0;
+    courses = new Course * [count];
+    add_matches(number, courses, root, index);
+    return count;
 }
 
-//TODO
-int Table::retrieve_range(char * lBound, char * uBound, Course * courses)
+//Helper function for retrieve_num, finds the amount of matches within the BST
+//so that an array can be sized to the amount of matches. 
+int Table::find_matches(char * number, node * root)
+{
+    if(!root) return 0;
+    
+    char * temp = new char[50];
+    root->course.getNum(temp);
+
+    if(strcmp(number, temp) == 0)
+    {
+    
+        return find_matches(number, root->left) + find_matches(number, 
+        root->right) + 1;
+    }
+    
+    return find_matches(number, root->left) + find_matches(number, root->right);
+
+}
+
+//Helper function for retrieve_num, given a string, an array of courses, the
+//root of a BST, and a starting index; the function adds the matched course to
+//the array and increments index after a match is found.
+int Table::add_matches(char * number, Course ** &courses, node * root, int &index)
+{
+    if(!root) return 0;
+
+    char * temp = new char[50];
+    root->course.getNum(temp);
+
+    if(strcmp(number, temp) == 0)
+    {
+        courses[index] = &root->course;
+        ++index;
+    }
+
+    add_matches(number, courses, root->left, index);
+    add_matches(number, courses, root->right, index);
+    return index;
+}
+
+int Table::retrieve_range(char * lBound, char * uBound, Course ** &courses)
 {
 
+    int count = 0;
+    count = find_matches(lBound, uBound, root);
+    if(count == 0) return 0;
+    
+    int index = 0;
+    courses = new Course * [count];
+    add_matches(lBound, uBound, courses, root, index);
+    return count;
 }
 
-//TODO
+int Table::find_matches(char * lBound, char * uBound, node * root)
+{
+    if(!root) return 0;
+
+    char * temp = new char[50];
+    root->course.getNum(temp);
+    if(strcmp(lBound, temp) <= 0 && strcmp(uBound, temp) >= 0)
+    {
+        return find_matches(lBound, uBound, root->left) + find_matches
+        (lBound, uBound, root->right) + 1;
+    }
+
+    return find_matches(lBound, uBound, root->left) + find_matches(lBound, uBound, root->right);
+}
+
+int Table::add_matches(char * lBound, char * uBound, Course ** &courses, node * root, int &index)
+{
+    if(!root) return 0;
+
+    char * temp = new char[50];
+    root->course.getNum(temp);
+
+    if(strcmp(lBound, temp) <= 0 && strcmp(uBound, temp) >= 0)
+    {
+        courses[index] = &root->course;
+        ++index;
+    }
+    
+    add_matches(lBound, uBound, courses, root->left, index);
+    add_matches(lBound, uBound, courses, root->right, index);
+    return index;
+}
+
+//Display all function will call its helper function to do the actual recursion
+//and display all the nodes in the BST.
 int Table::display_all()
 {
+    if(!root) return 0;
+    if(display_helper(root) == 1) return 1;
+    return 0;
+}
 
+//Display all's helper function, recursively moves through the BST, displaying
+//Node's data left to right.
+int Table::display_helper(node * root)
+{
+    if(root)
+    {
+        display_helper(root->left);
+        root->course.display_course();
+        display_helper(root->right);
+    }
+
+    return 1;
 }
 
 //TODO
@@ -180,10 +331,21 @@ int Table::remove(char * number)
 
 }
 
-//TODO
 int Table::remove_all()
 {
+    return remove_all_helper(root);
+}
 
+int Table::remove_all_helper(node * &root)
+{
+    if(!root)return 0;
+    
+    remove_all_helper(root->left);
+    remove_all_helper(root->right);    
+
+    delete root;
+    root = NULL;
+    return 0;
 }
 
 

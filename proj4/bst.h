@@ -45,11 +45,25 @@ public:
     Table();
     ~Table();
     int insert_course(Course &course);
-    int retrieve_num(char * number, Course &course);
-    int retrieve_range(char * lBound, char * uBound, Course * courses);
+    int retrieve_num(char * number, Course ** &course);
+    int retrieve_range(char * lBound, char * uBound, Course ** &courses);
     int display_all();
     int remove(char * number);
     int remove_all();
 private:
     node * root;
+    int insert_helper(node * &root, Course &course);
+    int display_helper(node * root);
+    int find_matches(char * number, node * root);
+    int find_matches(char * lBound, char * uBound, node * root);
+    int add_matches(char * number, Course ** &courses, node * root, int &index);
+    int add_matches(char * lBound, char * uBound, Course ** &courses, node * root, int &index);
+    int remove_all_helper(node * &root);
 };
+
+
+
+
+
+
+
