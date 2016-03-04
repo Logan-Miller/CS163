@@ -30,6 +30,8 @@ private:
     char * courseDesc;
 };
 
+//Node object are used to construct a BST. They have some data (a course) as
+//well as a left and right node pointer.
 struct node
 {
     Course course;
@@ -37,7 +39,11 @@ struct node
     node * right;
 };
 
-//BST
+//Table is an object for creating, inserting, searching and deleting from a BST
+//It has functions to insert a course to the BST, retrieve courses based on
+//their course number, retrieve courses based on a range of course numbers, to
+//display all data within the BST, to remove a course based on a search term 
+//from the BST, and to delete all data within the BST.
 class Table
 {
 

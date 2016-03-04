@@ -95,12 +95,12 @@ int Course::display_course()
    
     if(!courseNum || !courseName || !courseSched || !courseDesc) return 0;
 
-    cout << courseNum << endl;
-    cout << courseName << endl;
-    cout << sectionNum << endl;
-    cout << CRN << endl;
-    cout << courseSched << endl;
-    cout << courseDesc << endl;
+    cout << "Course Name: " << courseNum << endl;
+    cout << "Course Number: " << courseName << endl;
+    cout << "Section Number: " << sectionNum << endl;
+    cout << "CRN: " << CRN << endl;
+    cout << "Course Schedule: " << courseSched << endl;
+    cout << "Course Description: " << courseDesc << endl;
     cout << endl;
     return 1;
 }
@@ -137,22 +137,21 @@ int Course::name_match(char * name)
     return 0;
 }
 
-
-
 //******************************************************************************
 //*************************Table ADT********************************************
 //******************************************************************************
 
-//TODO
+//Table constructor, initially sets the root of the BST to NULL
 Table::Table()
 {
     root = NULL;
 }
 
-//TODO
+//Table destructor calls the remove all function to delete all nodes within
+//the BST
 Table::~Table()
 {
-
+    remove_all();
 }
 
 //Insert calls its helper function to the actual recursion and insert a course
@@ -201,7 +200,6 @@ int Table::insert_helper(node * &root, Course &course)
 //Should recieve a number to search for throughout the BST and an array of
 //pointers to courses that it will fill. It will also recieve an integer for 
 //keeping track of the number of matches found.
-//TODO
 int Table::retrieve_num(char * number, Course ** &courses)
 {
 
@@ -256,6 +254,13 @@ int Table::add_matches(char * number, Course ** &courses, node * root, int &inde
     return index;
 }
 
+//Retrieve range is passed a lower bound, an uper bound and an array of
+//pointers to courses. It calls the find_matches functions to find the number
+//of courses that fall within the bounds inside the BST. With the number of 
+//matches it creates an array of that size. It then calls the add_matches 
+//function to add all matches found to the array. Returns the number of matches
+//(the size of the array) so that the client program knows how many matches
+//were found.
 int Table::retrieve_range(char * lBound, char * uBound, Course ** &courses)
 {
 
@@ -269,6 +274,9 @@ int Table::retrieve_range(char * lBound, char * uBound, Course ** &courses)
     return count;
 }
 
+//Find matches is passed an upperbound, a lowerbound, and root to a BST
+//It searches through the BST for courses that fall within its recieved 
+//bounds. It counts the number of matches within the BST
 int Table::find_matches(char * lBound, char * uBound, node * root)
 {
     if(!root) return 0;
@@ -284,6 +292,12 @@ int Table::find_matches(char * lBound, char * uBound, node * root)
     return find_matches(lBound, uBound, root->left) + find_matches(lBound, uBound, root->right);
 }
 
+//Add matches is passed a lower bound, and upper bound, an array of pointers to
+//a course, a root of a BST, and an index. It searches through the BST for
+//course number's that fall within the bounds. It adds a pointer to the data 
+//to the array and then increments the index so that the next time a match is
+//added, it is at the next index. It returns the index (number of items in the
+//array)
 int Table::add_matches(char * lBound, char * uBound, Course ** &courses, node * root, int &index)
 {
     if(!root) return 0;
@@ -325,12 +339,16 @@ int Table::display_helper(node * root)
     return 1;
 }
 
-//TODO
+//Remove passes a string to the remove helper to search for matching data
+//within the BST. It returns 1 for a successful deletion and 0 for failure
 int Table::remove(char * number)
 {
     return remove_helper(number, root);
 }
 
+//Remove helper is passed a string to search for, and a root of a BST
+//There are four special cases when deleting from the BST, and do subcases
+//for the fourth case. 
 int Table::remove_helper(char * number, node * &root)
 {
     int check_left = 0;
@@ -340,6 +358,7 @@ int Table::remove_helper(char * number, node * &root)
 
     if(root->course.number_match(number) == 1)
     {
+        //Case 1: Match found at a leaf
         if(!root->left && !root->right)
         {
             delete root;
@@ -347,6 +366,7 @@ int Table::remove_helper(char * number, node * &root)
             return 1;
         }
 
+        //Case 2: Match found, root has no left pointer
         if(!root->left)
         {
             node * temp = root;
@@ -355,7 +375,8 @@ int Table::remove_helper(char * number, node * &root)
             temp = NULL;
             return 1;
         }
-
+        
+        //Case 3: Match found, root has no right pointer
         if(!root->right)
         {
             node * temp = root;
@@ -363,6 +384,44 @@ int Table::remove_helper(char * number, node * &root)
             delete temp;
             temp = NULL;
             return 1;
+        }
+        
+        //Case 4: Match found, root has 2 children
+        if(root->left && root->right)
+        {   
+            //Case for if the root's right pointer doesn't have a left pointer
+            //In this case the inorder successor is root->right;
+            if(!root->right->left)
+            {
+                node * temp = root->right;
+                root->course.copy_course(temp->course);
+                root->right = temp->right;
+                delete temp;
+                return 1;
+            }
+
+            //Case for if root->right does have a left pointer, in this case
+            //the inorder successor is all the way to root->right's left. So
+            //the program will traverse all the way to the left, swap the
+            //inorder successor's data to the root's data, and reattach any
+            //right side subtree that may be there. 
+            if(root->right->left)
+            {
+                node * temp = root->right;
+                node * current = temp;
+                node * previous = NULL;
+                while(current->left)
+                {
+                    previous = current;
+                    current = current->left;
+                }
+
+                root->course.copy_course(current->course);
+                previous->left = current->right;
+                delete current;
+                return 1;
+            }
+
         }
     }
 
@@ -372,11 +431,15 @@ int Table::remove_helper(char * number, node * &root)
     return 0;
 }
 
+//Remove all calls a helper function, passing it the root, so that the helper
+//fucntion may recusively delete all data within the tree.
 int Table::remove_all()
 {
     return remove_all_helper(root);
 }
 
+//Remove all helper recursively moves to the far left of the tree and then 
+//begins to delete nodes moving from left to right
 int Table::remove_all_helper(node * &root)
 {
     if(!root)return 0;

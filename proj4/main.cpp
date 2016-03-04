@@ -35,6 +35,7 @@ int main()
         cout << endl << "Enter your choice now: ";
         cin >> response;
         cin.ignore(100, '\n');
+        cout << endl;
         
         //response 1: creates a course and then inserts it into the BST
         if(response == '1')
@@ -58,6 +59,7 @@ int main()
             cout << "Enter a course number to search for: ";
             cin.getline(number, 50, '\n');
             cin.clear();
+            cout << endl;
             size = myTable.retrieve_num(number, courses);
             if(size > 0)
             {
@@ -122,18 +124,18 @@ int main()
         if(response == '4')
         {
             char * temp = new char[50];
-            cout << "Enter a course number to delete";
+            cout << "Enter a course number to delete: ";
             cin.getline(temp, 50, '\n');
             cin.clear();
 
             if(myTable.remove(temp) == 0)
             {
-                cout << "The course you entered was not found." << endl;
+                cout << endl << "The course you entered was not found." << endl;
             }
 
             else
             {
-                cout << "The course was deleted." << endl;
+                cout << endl << "The course was deleted." << endl;
             }
             
             delete [] temp;
@@ -142,7 +144,7 @@ int main()
         //Choice 5: wipes all data from the BST
         if(response == '5')
         {
-            cout << "All courses will now be wiped from the list" << endl;
+            cout << endl << "All courses will now be wiped from the list" << endl;
             myTable.remove_all();
         }
         
@@ -159,65 +161,6 @@ int main()
         }
     }
     
-    
-    
-    
-    
-    /*
-    Course myCourse;
-    Course course2;
-    Course course3;
-
-    myCourse.create_course();
-    course2.create_course();
-    course3.create_course();
-    
-    Table myTable;
-    myTable.insert_course(myCourse);
-    myTable.insert_course(course2);
-    myTable.insert_course(course3);
-    myTable.display_all();
-    */
-    //FOR TESTING THE RETRIEVE NUM FUNCTION
-    /*
-    char * temp = new char[20];
-    strcpy(temp, "a");
-    Course ** courses;
-    int count = myTable.retrieve_num(temp, courses);
-    cout << endl << endl << count << endl;
-
-    for(int i = 0; i < count; ++i)
-    {
-        courses[i]->display_course();
-    }
-    */
-    //**************************************
-
-    //FOR TESTING THE RANGE FUNCTION
-/*
-    char * temp2 = new char[20];
-    strcpy(temp2, "c");
-    char * temp3 = new char[20];
-    strcpy(temp3, "e"); 
-
-    Course ** courses;
-    int count = myTable.retrieve_range(temp2, temp3, courses);
-
-    cout << endl << endl << count << endl << endl;
-
-    for(int i = 0; i < count; ++i)
-    {
-        courses[i]->display_course();
-    }
-    
-
-    //REMOVAL TESTING
-    
-    myTable.remove_all();
-    myTable.display_all();
-    
-*/
-
     cout << "The program will now close" << endl;
     return 0;
 }
