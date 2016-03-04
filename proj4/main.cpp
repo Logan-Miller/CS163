@@ -112,10 +112,31 @@ int main()
                     }
                 }
             }
+
+            delete [] lBound;
+            delete [] uBound;
         }
         
+        //Choice 4: Allows the user to enter a course number to delete from
+        //the list. 
         if(response == '4')
         {
+            char * temp = new char[50];
+            cout << "Enter a course number to delete";
+            cin.getline(temp, 50, '\n');
+            cin.clear();
+
+            if(myTable.remove(temp) == 0)
+            {
+                cout << "The course you entered was not found." << endl;
+            }
+
+            else
+            {
+                cout << "The course was deleted." << endl;
+            }
+            
+            delete [] temp;
         }
         
         //Choice 5: wipes all data from the BST

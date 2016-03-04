@@ -58,6 +58,7 @@ private:
     int find_matches(char * lBound, char * uBound, node * root);
     int add_matches(char * number, Course ** &courses, node * root, int &index);
     int add_matches(char * lBound, char * uBound, Course ** &courses, node * root, int &index);
+    int remove_helper(char * number, node * &root);
     int remove_all_helper(node * &root);
 };
 

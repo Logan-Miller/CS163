@@ -328,7 +328,48 @@ int Table::display_helper(node * root)
 //TODO
 int Table::remove(char * number)
 {
+    return remove_helper(number, root);
+}
 
+int Table::remove_helper(char * number, node * &root)
+{
+    int check_left = 0;
+    int check_right = 0;
+    
+    if(!root) return 0;
+
+    if(root->course.number_match(number) == 1)
+    {
+        if(!root->left && !root->right)
+        {
+            delete root;
+            root = NULL;
+            return 1;
+        }
+
+        if(!root->left)
+        {
+            node * temp = root;
+            root = root->right;
+            delete temp;
+            temp = NULL;
+            return 1;
+        }
+
+        if(!root->right)
+        {
+            node * temp = root;
+            root = root->left;
+            delete temp;
+            temp = NULL;
+            return 1;
+        }
+    }
+
+    check_left = remove_helper(number, root->left);
+    check_right = remove_helper(number, root->right);
+    if(check_left == 1 || check_right == 1) return 1;
+    return 0;
 }
 
 int Table::remove_all()
